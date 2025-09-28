@@ -21,10 +21,6 @@ public class Paciente {
 
     @Override
     public String toString() {
-
-        return "Paciente [" +
-                "nome=" + nome +
                 ", foiAtendido=" + foiAtendido +
-                "]";
     }
 }
