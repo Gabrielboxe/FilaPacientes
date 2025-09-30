@@ -1,43 +1,47 @@
 public class Main {
     public static void main(String[] args) {
 
-        FilaDeEspera filaDeEspera = new FilaDeEspera();
+        FilaDePrioridadeDePacientes filaDePrioridade = new FilaDePrioridadeDePacientes();
         ListaDeAtendidos listaDeAtendidos = new ListaDeAtendidos();
 
-        System.out.println("--- Chegada de Pacientes ---");
-        filaDeEspera.adicionarPaciente (new Paciente ("João", 45));
-        filaDeEspera.adicionarPaciente (new Paciente ("Maria", 22));
-        filaDeEspera.adicionarPaciente (new Paciente ("Pedro", 78));
-        filaDeEspera.adicionarPaciente (new Paciente ("Ana", 30));
-        filaDeEspera.adicionarPaciente (new Paciente ("Carlos", 60));
+        System.out.println("==============================================");
+        System.out.println("--- SIMULAÇÃO: FILA DE PRIORIDADE (10 Pacientes) ---");
+        System.out.println("==============================================");
 
-        System.out.println("\n--- Atendimento de Pacientes ---");
-        for (int i=0; i<3; i++) {
-            if (!filaDeEspera.estaVazia()) {
-                Paciente pacienteAtendido =
-                        filaDeEspera.removerPaciente();
-                pacienteAtendido.setAtendido (true);
-                listaDeAtendidos.adicionarPacienteAtendido (pacienteAtendido);
-                System.out.println("Paciente " +
-                        pacienteAtendido.getNome () + " atendido e movido para a lista.");
+        System.out.println("\n--- Chegada de Pacientes na Fila de Prioridade ---");
+        filaDePrioridade.adicionarPaciente(new Paciente("P1 - Maria", 75, false)); // Idosa
+        filaDePrioridade.adicionarPaciente(new Paciente("P2 - João", 30, false)); // Normal
+        filaDePrioridade.adicionarPaciente(new Paciente("P3 - Ana", 40, true)); // URGENTE (Prioridade Máxima)
+        filaDePrioridade.adicionarPaciente(new Paciente("P4 - Carlos", 62, false)); // Idoso
+        filaDePrioridade.adicionarPaciente(new Paciente("P5 - Beatriz", 25, false)); // Normal
+        filaDePrioridade.adicionarPaciente(new Paciente("P6 - Pedro", 15, true)); // URGENTE
+        filaDePrioridade.adicionarPaciente(new Paciente("P7 - Sofia", 50, false)); // Normal
+        filaDePrioridade.adicionarPaciente(new Paciente("P8 - Eva", 80, false)); // Idosa (Mais Idosa)
+        filaDePrioridade.adicionarPaciente(new Paciente("P9 - Leo", 55, true)); // URGENTE
+        filaDePrioridade.adicionarPaciente(new Paciente("P10 - Rui", 40, false)); // Normal
+
+        filaDePrioridade.exibirFila();
+
+        System.out.println("\n==============================================");
+        System.out.println("--- INÍCIO DO ATENDIMENTO (Prioridade) ---");
+        System.out.println("==============================================");
+
+        for (int i = 0; i < 5; i++) {
+            Paciente pacienteAtendido = filaDePrioridade.atenderProximoPaciente();
+            if (pacienteAtendido != null) {
+                pacienteAtendido.setAtendido(true);
+                listaDeAtendidos.adicionarPacienteAtendido(pacienteAtendido);
             }
         }
 
-        System.out.println("\n--- Próximo Paciente na Fila ---");
-        Paciente proximo = filaDeEspera.proximoPaciente();
-        if (proximo != null) {
-            System.out.println("Próximo paciente a ser atendido: " + proximo.getNome());
-        } else {
-            System.out.println("A fila de espera está vazia.");
-        }
-
-        System.out.println("\n--- Pesquisa ---");
-        String nomePesquisa = "Maria";
-        if (listaDeAtendidos.pacienteFoiAtendido (nomePesquisa)) {
-            System.out.println("O paciente " + nomePesquisa + " já foi atendido.");
-        } else {
-            System.out.println("O paciente "+ nomePesquisa + " ainda não foi atendido.");
-        }
+        filaDePrioridade.exibirFila();
         listaDeAtendidos.exibirRelatorioDiario();
+        System.out.println("\n==============================================");
+        System.out.println("--- REFLEXÃO: COMPLEXIDADE ALGORÍTMICA (Fila de Prioridade) ---");
+        System.out.println("==============================================");
+        System.out.println("Em uma Fila de Prioridade (implementada com Heap Binária, como o Java PriorityQueue):");
+        System.out.println("- Inserção (adicionarPaciente): Complexidade O(log n).");
+        System.out.println("- Remoção do Máximo/Prioritário (atenderProximoPaciente): Complexidade O(log n).");
+        System.out.println("Essa complexidade é mais lenta que O(1) da Fila normal (LinkedList), mas garante que o paciente com maior prioridade esteja sempre no topo.");
     }
 }
